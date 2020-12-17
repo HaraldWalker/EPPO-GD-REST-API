@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "EPPO GD REST API",
-    "description": "API for the EPPO Global Database. The EPPO Global Database (GD) is  a freely accessible web-based database which is maintained by the Secretariat of the European and Mediterranean Plant Protection Organization (EPPO). Register at https://data.eppo.int/ to get an API token.",
+    "description": "OpenAPI 3.0 specification for the REST API of the EPPO Global Database. The EPPO Global Database (GD) is a freely accessible web-based database which is maintained by the Secretariat of the European and Mediterranean Plant Protection Organization (EPPO). Register at https://data.eppo.int/ to get an API token.",
     "contact": {
       "url": "https://bitwalker.eu"
     },
@@ -61,6 +61,43 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Taxon"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/taxon/{eppocode}/names": {
+      "get": {
+        "tags": [
+          "taxon"
+        ],
+        "summary": "Get names for eppocode.",
+        "description": "Get a list of names for eppocode.",
+        "operationId": "getNames",
+        "parameters": [
+          {
+            "name": "eppocode",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of hosts for eppocode.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Name"
                   }
                 }
               }
@@ -143,43 +180,6 @@
         }
       }
     },
-    "/taxon/{eppocode}/names": {
-      "get": {
-        "tags": [
-          "taxon"
-        ],
-        "summary": "Get names for eppocode.",
-        "description": "Get a list of names for eppocode.",
-        "operationId": "getNames",
-        "parameters": [
-          {
-            "name": "eppocode",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Array of hosts for eppocode.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Name"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/taxon/{eppocode}/hosts": {
       "get": {
         "tags": [
@@ -208,8 +208,76 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Host"
+                    "$ref": "#/components/schemas/ExtendedHost"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/taxon/{eppocode}/pests": {
+      "get": {
+        "tags": [
+          "taxon"
+        ],
+        "summary": "Get pests for eppocode.",
+        "description": "Get prests for a plant.",
+        "operationId": "getPests",
+        "parameters": [
+          {
+            "name": "eppocode",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of pests for eppocode.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/country/{isocode}": {
+      "get": {
+        "tags": [
+          "country"
+        ],
+        "summary": "Get pests for eppocode.",
+        "description": "Get details for a country code.",
+        "operationId": "getCountry",
+        "parameters": [
+          {
+            "name": "isocode",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of pests for eppocode.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Country"
                 }
               }
             }
@@ -306,7 +374,6 @@
       },
       "Host": {
         "required": [
-          "codeid",
           "eppocode",
           "full_name",
           "idclass",
@@ -314,13 +381,9 @@
         ],
         "type": "object",
         "properties": {
-          "codeid": {
-            "type": "integer",
-            "example": 48912
-          },
           "eppocode": {
             "type": "string",
-            "example": "Zea mays"
+            "example": "ZEAMX"
           },
           "idclass": {
             "type": "integer",
@@ -335,6 +398,24 @@
             "example": "Zea mays"
           }
         }
+      },
+      "ExtendedHost": {
+        "required": [
+          "codeid"
+        ],
+        "type": "object",
+        "properties": {
+          "codeid": {
+            "type": "integer",
+            "example": 48912
+          }
+        },
+        "description": "Host with codeid",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Host"
+          }
+        ]
       },
       "Taxonomy": {
         "required": [
@@ -402,6 +483,52 @@
           "yr_trans": {
             "type": "integer",
             "example": 2020
+          }
+        }
+      },
+      "Country": {
+        "type": "object",
+        "properties": {
+          "isocode": {
+            "type": "string",
+            "example": "DE"
+          },
+          "countryname": {
+            "type": "string",
+            "example": "Germany"
+          },
+          "continent": {
+            "type": "string",
+            "example": "Europe"
+          }
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "Experimental": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Host"
+            }
+          },
+          "Hosts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Host"
+            }
+          },
+          "Major host": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Host"
+            }
+          },
+          "Wild/Weed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Host"
+            }
           }
         }
       },

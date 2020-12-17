@@ -2,7 +2,7 @@
 openapi: 3.0.0
 info:
   title: EPPO GD REST API
-  description: API for the EPPO Global Database. The EPPO Global Database (GD) is  a freely accessible web-based database which is maintained by the Secretariat of the European and Mediterranean Plant Protection Organization (EPPO). Register at https://data.eppo.int/ to get an API token.
+  description: OpenAPI 3.0 specification for the REST API of the EPPO Global Database. The EPPO Global Database (GD) is a freely accessible web-based database which is maintained by the Secretariat of the European and Mediterranean Plant Protection Organization (EPPO). Register at https://data.eppo.int/ to get an API token.
   contact:
     url: https://bitwalker.eu
   license:
@@ -13,28 +13,28 @@ externalDocs:
   description: EPPO Global Database
   url: https://gd.eppo.int/
 servers:
-- url: https://virtserver.swaggerhub.com/HaraldWalker/EPPO/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://data.eppo.int/api/rest/1.0/
-  description: Production REST API
+  - url: https://virtserver.swaggerhub.com/HaraldWalker/EPPO/1.0.0
+    description: SwaggerHub API Auto Mocking
+  - url: https://data.eppo.int/api/rest/1.0/
+    description: Production REST API
 security:
-- ApiKeyAuth: []
+  - ApiKeyAuth: []
 paths:
   /taxon/{eppocode}:
     get:
       tags:
-      - taxon
+        - taxon
       summary: Get basic information about eppocode.
       description: Get a the basic information about an eppocode.
       operationId: getEppocode
       parameters:
-      - name: eppocode
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: eppocode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: Array of hosts for eppocode.
@@ -44,21 +44,45 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Taxon'
+  /taxon/{eppocode}/names:
+    get:
+      tags:
+        - taxon
+      summary: Get names for eppocode.
+      description: Get a list of names for eppocode.
+      operationId: getNames
+      parameters:
+        - name: eppocode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of hosts for eppocode.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Name'
   /taxon/{eppocode}/taxonomy:
     get:
       tags:
-      - taxon
+        - taxon
       summary: Get taxonomy for eppocode.
       description: Get the taxonomy tree for an eppocode.
       operationId: getTaxonomy
       parameters:
-      - name: eppocode
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: eppocode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: Array of taxonomy tree, ordered by level.
@@ -71,18 +95,18 @@ paths:
   /taxon/{eppocode}/categorization:
     get:
       tags:
-      - taxon
+        - taxon
       summary: Get categorization for eppocode.
       description: Get the regional categorizations as array for an eppocode.
       operationId: getCategorization
       parameters:
-      - name: eppocode
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: eppocode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: Array of categorizations.
@@ -92,45 +116,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Categorization'
-  /taxon/{eppocode}/names:
-    get:
-      tags:
-      - taxon
-      summary: Get names for eppocode.
-      description: Get a list of names for eppocode.
-      operationId: getNames
-      parameters:
-      - name: eppocode
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Array of hosts for eppocode.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Name'
   /taxon/{eppocode}/hosts:
     get:
       tags:
-      - taxon
+        - taxon
       summary: Get hosts for eppocode.
       description: Get host plants.
       operationId: getHosts
       parameters:
-      - name: eppocode
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: eppocode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: Array of hosts for eppocode.
@@ -139,16 +139,60 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Host'
+                  $ref: '#/components/schemas/ExtendedHost'
+  /taxon/{eppocode}/pests:
+    get:
+      tags:
+        - taxon
+      summary: Get pests for eppocode.
+      description: Get prests for a plant.
+      operationId: getPests
+      parameters:
+        - name: eppocode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of pests for eppocode.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+  /country/{isocode}:
+    get:
+      tags:
+        - country
+      summary: Get pests for eppocode.
+      description: Get details for a country code.
+      operationId: getCountry
+      parameters:
+        - name: isocode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of pests for eppocode.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
 components:
   schemas:
     Taxon:
       required:
-      - c_date
-      - codeid
-      - eppocode
-      - prefname
-      - status
+        - c_date
+        - codeid
+        - eppocode
+        - prefname
+        - status
       type: object
       properties:
         codeid:
@@ -182,10 +226,10 @@ components:
           $ref: '#/components/schemas/Taxon_attached_infos'
     Name:
       required:
-      - fullname
-      - isolang
-      - nameid
-      - preferred
+        - fullname
+        - isolang
+        - nameid
+        - preferred
       type: object
       properties:
         nameid:
@@ -207,19 +251,15 @@ components:
           example: Diabrotica barberi
     Host:
       required:
-      - codeid
-      - eppocode
-      - full_name
-      - idclass
-      - labelclass
+        - eppocode
+        - full_name
+        - idclass
+        - labelclass
       type: object
       properties:
-        codeid:
-          type: integer
-          example: 48912
         eppocode:
           type: string
-          example: Zea mays
+          example: ZEAMX
         idclass:
           type: integer
           example: 1
@@ -229,12 +269,23 @@ components:
         full_name:
           type: string
           example: Zea mays
+    ExtendedHost:
+      required:
+        - codeid
+      type: object
+      properties:
+        codeid:
+          type: integer
+          example: 48912
+      description: Host with codeid
+      allOf:
+        - $ref: '#/components/schemas/Host'
     Taxonomy:
       required:
-      - codeid
-      - eppocode
-      - level
-      - prefname
+        - codeid
+        - eppocode
+        - level
+        - prefname
       type: object
       properties:
         codeid:
@@ -251,9 +302,9 @@ components:
           example: Chrysomelidae
     Categorization:
       required:
-      - country
-      - isocode
-      - nomcontinent
+        - country
+        - isocode
+        - nomcontinent
       type: object
       properties:
         nomcontinent:
@@ -280,6 +331,37 @@ components:
         yr_trans:
           type: integer
           example: 2020
+    Country:
+      type: object
+      properties:
+        isocode:
+          type: string
+          example: DE
+        countryname:
+          type: string
+          example: Germany
+        continent:
+          type: string
+          example: Europe
+    inline_response_200:
+      type: object
+      properties:
+        Experimental:
+          type: array
+          items:
+            $ref: '#/components/schemas/Host'
+        Hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Host'
+        Major host:
+          type: array
+          items:
+            $ref: '#/components/schemas/Host'
+        Wild/Weed:
+          type: array
+          items:
+            $ref: '#/components/schemas/Host'
     Taxon_attached_infos:
       type: object
       properties:
