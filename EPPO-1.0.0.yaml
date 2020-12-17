@@ -1,0 +1,307 @@
+---
+openapi: 3.0.0
+info:
+  title: EPPO GD REST API
+  description: API for the EPPO Global Database. The EPPO Global Database (GD) is  a freely accessible web-based database which is maintained by the Secretariat of the European and Mediterranean Plant Protection Organization (EPPO). Register at https://data.eppo.int/ to get an API token.
+  contact:
+    url: https://bitwalker.eu
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: EPPO Global Database
+  url: https://gd.eppo.int/
+servers:
+- url: https://virtserver.swaggerhub.com/HaraldWalker/EPPO/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://data.eppo.int/api/rest/1.0/
+  description: Production REST API
+security:
+- ApiKeyAuth: []
+paths:
+  /taxon/{eppocode}:
+    get:
+      tags:
+      - taxon
+      summary: Get basic information about eppocode.
+      description: Get a the basic information about an eppocode.
+      operationId: getEppocode
+      parameters:
+      - name: eppocode
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Array of hosts for eppocode.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taxon'
+  /taxon/{eppocode}/taxonomy:
+    get:
+      tags:
+      - taxon
+      summary: Get taxonomy for eppocode.
+      description: Get the taxonomy tree for an eppocode.
+      operationId: getTaxonomy
+      parameters:
+      - name: eppocode
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Array of taxonomy tree, ordered by level.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taxonomy'
+  /taxon/{eppocode}/categorization:
+    get:
+      tags:
+      - taxon
+      summary: Get categorization for eppocode.
+      description: Get the regional categorizations as array for an eppocode.
+      operationId: getCategorization
+      parameters:
+      - name: eppocode
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Array of categorizations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categorization'
+  /taxon/{eppocode}/names:
+    get:
+      tags:
+      - taxon
+      summary: Get names for eppocode.
+      description: Get a list of names for eppocode.
+      operationId: getNames
+      parameters:
+      - name: eppocode
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Array of hosts for eppocode.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Name'
+  /taxon/{eppocode}/hosts:
+    get:
+      tags:
+      - taxon
+      summary: Get hosts for eppocode.
+      description: Get host plants.
+      operationId: getHosts
+      parameters:
+      - name: eppocode
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Array of hosts for eppocode.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Host'
+components:
+  schemas:
+    Taxon:
+      required:
+      - c_date
+      - codeid
+      - eppocode
+      - prefname
+      - status
+      type: object
+      properties:
+        codeid:
+          type: integer
+          example: 9060
+        eppocode:
+          type: string
+          example: DIABLO
+        status:
+          type: string
+          example: A
+        c_date:
+          type: string
+          description: Creation date
+          format: date-time
+        m_date:
+          type: string
+          description: Modified date
+          format: date-time
+        descinfos:
+          type: string
+          description: Description or note.
+          example: Lorem ipsum
+        prefname:
+          type: string
+          description: Preferred scientific name
+          example: Diabrotica barberi
+        replacedby:
+          type: string
+        attached_infos:
+          $ref: '#/components/schemas/Taxon_attached_infos'
+    Name:
+      required:
+      - fullname
+      - isolang
+      - nameid
+      - preferred
+      type: object
+      properties:
+        nameid:
+          type: integer
+          example: 48912
+        isolang:
+          type: string
+          example: la
+        isocountry:
+          type: string
+        preferred:
+          type: integer
+          example: 1
+        author:
+          type: string
+          example: Smith & Lawrence
+        fullname:
+          type: string
+          example: Diabrotica barberi
+    Host:
+      required:
+      - codeid
+      - eppocode
+      - full_name
+      - idclass
+      - labelclass
+      type: object
+      properties:
+        codeid:
+          type: integer
+          example: 48912
+        eppocode:
+          type: string
+          example: Zea mays
+        idclass:
+          type: integer
+          example: 1
+        labelclass:
+          type: string
+          example: Major
+        full_name:
+          type: string
+          example: Zea mays
+    Taxonomy:
+      required:
+      - codeid
+      - eppocode
+      - level
+      - prefname
+      type: object
+      properties:
+        codeid:
+          type: integer
+          example: 57714
+        eppocode:
+          type: string
+          example: 1CHRYF
+        level:
+          type: integer
+          example: 6
+        prefname:
+          type: string
+          example: Chrysomelidae
+    Categorization:
+      required:
+      - country
+      - isocode
+      - nomcontinent
+      type: object
+      properties:
+        nomcontinent:
+          type: string
+          example: Africa
+        isocode:
+          type: string
+          example: MA
+        country:
+          type: string
+          example: Morocco
+        qlist:
+          type: string
+          example: X
+        qlistlabel:
+          type: string
+          example: Quarantine pest
+        yr_add:
+          type: integer
+          example: 2018
+        yr_del:
+          type: integer
+          example: 2019
+        yr_trans:
+          type: integer
+          example: 2020
+    Taxon_attached_infos:
+      type: object
+      properties:
+        datasheet:
+          type: integer
+        categorization:
+          type: integer
+        distribution:
+          type: integer
+        pests:
+          type: integer
+        hosts:
+          type: integer
+        photos:
+          type: integer
+        documents:
+          type: integer
+        reporting:
+          type: integer
+      description: Count of available data. Some of thsese are exposed via this API.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: authtoken
+      in: query
