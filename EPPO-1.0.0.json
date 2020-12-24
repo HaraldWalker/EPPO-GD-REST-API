@@ -375,7 +375,7 @@
       "Host": {
         "required": [
           "eppocode",
-          "full_name",
+          "fullname",
           "idclass",
           "labelclass"
         ],
@@ -393,7 +393,7 @@
             "type": "string",
             "example": "Major"
           },
-          "full_name": {
+          "fullname": {
             "type": "string",
             "example": "Zea mays"
           }
@@ -512,7 +512,7 @@
               "$ref": "#/components/schemas/Host"
             }
           },
-          "Hosts": {
+          "Host": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Host"

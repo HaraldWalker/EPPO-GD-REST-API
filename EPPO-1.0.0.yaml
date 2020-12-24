@@ -252,7 +252,7 @@ components:
     Host:
       required:
         - eppocode
-        - full_name
+        - fullname
         - idclass
         - labelclass
       type: object
@@ -266,7 +266,7 @@ components:
         labelclass:
           type: string
           example: Major
-        full_name:
+        fullname:
           type: string
           example: Zea mays
     ExtendedHost:
@@ -350,7 +350,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Host'
-        Hosts:
+        Host:
           type: array
           items:
             $ref: '#/components/schemas/Host'
