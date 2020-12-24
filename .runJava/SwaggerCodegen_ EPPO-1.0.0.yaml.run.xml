@@ -1,0 +1,43 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SwaggerCodegen: EPPO-1.0.0.yaml" type="SwaggerCodegen">
+    <option name="activeConfigurationType" value="FILE" />
+    <option name="configurationPath" value="$PROJECT_DIR$/client/java-client.json" />
+    <option name="customJreEnabled" value="false" />
+    <option name="customTemplatesPath" value="" />
+    <option name="enableDebugLogging" value="false" />
+    <option name="generateToPath" value="$PROJECT_DIR$/client/restTemplate" />
+    <option name="generationParameters">
+      <list>
+        <CliArgumentViewModel>
+          <option name="name" value="licenseName" />
+          <option name="value" value="Apache" />
+        </CliArgumentViewModel>
+        <CliArgumentViewModel>
+          <option name="name" value="apiPackage" />
+          <option name="value" value="eu.bitwalker.eppogdrest" />
+        </CliArgumentViewModel>
+        <CliArgumentViewModel>
+          <option name="name" value="artifactId" />
+          <option name="value" value="eppogdrest" />
+        </CliArgumentViewModel>
+        <CliArgumentViewModel>
+          <option name="name" value="groupId" />
+          <option name="value" value="eu.bitwalker" />
+        </CliArgumentViewModel>
+        <CliArgumentViewModel>
+          <option name="name" value="dateLibrary" />
+          <option name="value" value="java8" />
+        </CliArgumentViewModel>
+        <CliArgumentViewModel>
+          <option name="name" value="library" />
+          <option name="value" value="webclient" />
+        </CliArgumentViewModel>
+      </list>
+    </option>
+    <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/4.3.1/openapi-generator-cli-4.3.1.jar" />
+    <option name="jdkPath" value="Default" />
+    <option name="language" value="java" />
+    <option name="specificationPath" value="$PROJECT_DIR$/EPPO-1.0.0.yaml" />
+    <method v="2" />
+  </configuration>
+</component>

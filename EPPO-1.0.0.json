@@ -208,7 +208,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ExtendedHost"
+                    "$ref": "#/components/schemas/Host"
                   }
                 }
               }
@@ -372,10 +372,9 @@
           }
         }
       },
-      "Host": {
+      "BaseHost": {
         "required": [
           "eppocode",
-          "fullname",
           "idclass",
           "labelclass"
         ],
@@ -392,28 +391,45 @@
           "labelclass": {
             "type": "string",
             "example": "Major"
-          },
+          }
+        }
+      },
+      "PestHost": {
+        "required": [
+          "fullname"
+        ],
+        "type": "object",
+        "properties": {
           "fullname": {
             "type": "string",
             "example": "Zea mays"
           }
-        }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseHost"
+          }
+        ]
       },
-      "ExtendedHost": {
+      "Host": {
         "required": [
-          "codeid"
+          "codeid",
+          "full_name"
         ],
         "type": "object",
         "properties": {
           "codeid": {
             "type": "integer",
             "example": 48912
+          },
+          "full_name": {
+            "type": "string",
+            "example": "Zea mays"
           }
         },
-        "description": "Host with codeid",
         "allOf": [
           {
-            "$ref": "#/components/schemas/Host"
+            "$ref": "#/components/schemas/BaseHost"
           }
         ]
       },
@@ -509,25 +525,25 @@
           "Experimental": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Host"
+              "$ref": "#/components/schemas/PestHost"
             }
           },
           "Host": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Host"
+              "$ref": "#/components/schemas/PestHost"
             }
           },
           "Major host": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Host"
+              "$ref": "#/components/schemas/PestHost"
             }
           },
           "Wild/Weed": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Host"
+              "$ref": "#/components/schemas/PestHost"
             }
           }
         }
